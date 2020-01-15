@@ -11,8 +11,12 @@ export class Client {
   tableNamePattern = /^([a-zA-Z]+)-([a-z0-9]+)-([a-z]+)$/;
 
   constructor() {
-    this.dynamoDb = new AWS.DynamoDB();
-    this.client = new AWS.DynamoDB.DocumentClient();
+    const options = {
+      accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
+      secretAccessKey: process.env.REACT_APP_SECRET_KEY_ID,
+    };
+    this.dynamoDb = new AWS.DynamoDB(options);
+    this.client = new AWS.DynamoDB.DocumentClient(options);
   }
 
   async scan(tableName :string) {
