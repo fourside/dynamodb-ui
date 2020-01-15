@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { TableList, Client } from './client/client';
-import { TableListContext } from './contexts/TableListContext';
+import React, { useState, useEffect } from "react";
+import { TableList, Client } from "./client/client";
+import { TableListContext } from "./contexts/TableListContext";
+import { TableListMenu } from "./components/TableListMenu";
 
 const App :React.FC = () => {
 
@@ -20,9 +21,8 @@ const App :React.FC = () => {
 
   return (
     <TableListContext.Provider value={tableList} >
-      Hello World
+      <TableListMenu envName={"production"} />
     </TableListContext.Provider>
-
   );
 };
 
