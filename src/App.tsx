@@ -1,8 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { TableList, Client } from './client/client';
 
-const App: React.FC = () => {
+const App :React.FC = () => {
+
+  const [tableList, setTableList] = useState<TableList>({});
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const client = new Client();
+        const tables = await client.listTablesByEnv();
+        setTableList(tables);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -21,6 +35,6 @@ const App: React.FC = () => {
       </header>
     </div>
   );
-}
+};
 
 export default App;
