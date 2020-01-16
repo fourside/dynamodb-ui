@@ -2,4 +2,6 @@ import { createContext } from "react";
 import { TableList } from "../client/client";
 
 const tableList :TableList = {};
-export const TableListContext = createContext(tableList);
+const env = "";
+const setEnv = (env :string) => {};
+export const TableListContext = createContext({ tableList, env, setEnv });

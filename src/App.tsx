@@ -7,6 +7,8 @@ import { Header } from "./components/Header";
 const App :React.FC = () => {
 
   const [tableList, setTableList] = useState<TableList>({});
+  const [env, setEnv] = useState("");
+  const value = {tableList, env, setEnv};
 
   useEffect(() => {
     (async () => {
@@ -21,9 +23,9 @@ const App :React.FC = () => {
   }, []);
 
   return (
-    <TableListContext.Provider value={tableList} >
+    <TableListContext.Provider value={value} >
       <Header />
-      <TableListMenu envName={"production"} />
+      <TableListMenu />
     </TableListContext.Provider>
   );
 };
