@@ -19,7 +19,7 @@ export class Client {
     this.client = new AWS.DynamoDB.DocumentClient(options);
   }
 
-  async scan(tableName :string) {
+  async scan(tableName :string) :Promise<DocumentClient.ScanOutput> {
     return new Promise((resolve, reject) => {
       this.client.scan({ TableName: tableName}, (err, data) => {
         if (err) {
