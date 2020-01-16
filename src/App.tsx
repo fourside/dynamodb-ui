@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { TableList, Client } from "./client/client";
 import { TableListContext } from "./contexts/TableListContext";
 import { TableListMenu } from "./components/TableListMenu";
 import { Header } from "./components/Header";
+import { Home } from "./components/Home";
 
 const App :React.FC = () => {
 
@@ -23,10 +25,17 @@ const App :React.FC = () => {
   }, []);
 
   return (
-    <TableListContext.Provider value={value} >
-      <Header />
-      <TableListMenu />
-    </TableListContext.Provider>
+    <Router>
+      <TableListContext.Provider value={value} >
+        <Header />
+        <TableListMenu />
+        <Switch>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </TableListContext.Provider>
+    </Router>
   );
 };
 
