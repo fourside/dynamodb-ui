@@ -3,10 +3,24 @@ export class Model {
 
   fields: string[];
   constructor(object :any) {
-    this.fields = Object.keys(object);
+    this.fields = this.extractFields(Object.keys(object));
     this.fields.forEach(field => {
       this.defineGet(field, object[field]);
     });
+  }
+
+  private extractFields(originalFields :string[]) :string[] {
+    const fields = originalFields.filter(field => {
+      return field !== "__typename"
+        && field !== "id"
+        && field !== "createdAt"
+        && field !== "updatedAt"
+      ;
+    });
+    fields.unshift("id");
+    fields.push("createdAt");
+    fields.push("updatedAt");
+    return fields;
   }
 
   private defineGet(field :string, actualValue :any) {
@@ -16,7 +30,11 @@ export class Model {
         if (actualValue === null) {
           returnValue = "null";
         } else if (Array.isArray(actualValue)) {
-          returnValue = actualValue.join(", ");
+          if (actualValue.length > 0 && isS3Object(actualValue[0])) {
+            returnValue = actualValue.map(v => new S3Object(v).url).join(", ");
+          } else {
+            returnValue = actualValue.join(", ");
+          }
         } else if (isS3Object(actualValue)) {
           returnValue = (new S3Object(actualValue)).url;
         }
