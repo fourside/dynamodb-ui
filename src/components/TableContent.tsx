@@ -13,6 +13,7 @@ import { TableListContext } from "../contexts/TableListContext";
 import { Client } from "../client/client";
 import { TableName } from "../domain/TableName";
 import { toModel, getFields } from "../domain/Model";
+import { ConditionalTableCell } from "./ConditionalTableCell";
 
 const useStyles = makeStyles({
   table: {
@@ -65,8 +66,8 @@ export const TableContent = ({ match } :Props) => {
         <TableBody>
           {items.map(item => (
             <TableRow key={item.id}>
-              {fields.map(field => (
-                <TableCell key={field}>{item[field]}</TableCell>
+              {fields.map((field, i) => (
+                <ConditionalTableCell key={i} item={item} field={field} />
               ))}
             </TableRow>
           ))}

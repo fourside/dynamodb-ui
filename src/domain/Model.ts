@@ -24,14 +24,16 @@ export class Model {
   }
 
   private defineGet(field :string, actualValue :any) {
-    let returnValue = "";
+    let returnValue :string | string[];
     switch (typeof actualValue) {
       case "object":
         if (actualValue === null) {
           returnValue = "null";
         } else if (Array.isArray(actualValue)) {
           if (actualValue.length > 0 && isS3Object(actualValue[0])) {
-            returnValue = actualValue.map(v => new S3Object(v).url).join(", ");
+            returnValue = actualValue.map(v => new S3Object(v).url);
+          } else if (actualValue.length > 0 && typeof actualValue[0] === "object") {
+            returnValue = actualValue.map(v => JSON.stringify(v)).join(", ");
           } else {
             returnValue = actualValue.join(", ");
           }
