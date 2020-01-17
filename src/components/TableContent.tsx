@@ -3,6 +3,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { TableListContext } from "../contexts/TableListContext";
 import { Client } from "../client/client";
 import { ItemList } from "aws-sdk/clients/dynamodb";
+import { TableName } from "../domain/TableName";
 
 type Props = RouteComponentProps<{tableName :string}>;
 
@@ -14,10 +15,10 @@ export const TableContent = ({ match } :Props) => {
   useEffect(() => {
     (async () => {
       const tableName = match.params.tableName;
-      const pattern = new RegExp(`^${tableName}-\\w+-${env}$`);
-      const tableFullName = tableList[env]?.find(table => pattern.test(table));
-      console.log("tablename", tableFullName)
+      const findCallback = TableName.getFindCallback(tableName, env);
+      const tableFullName = tableList[env]?.find(findCallback);
       if (tableFullName) {
+        console.log("tablename", tableFullName)
         const output = await client.scan(tableFullName);
         setItems(output.Items);
         console.log(items);

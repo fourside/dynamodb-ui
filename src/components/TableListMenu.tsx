@@ -5,6 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { TableListContext } from "../contexts/TableListContext";
+import { TableName } from "../domain/TableName";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,8 +21,6 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const tablePattern = /^(\w+)-.+$/;
-
 const TableListMenu :React.FC<RouteComponentProps> = ({ history } :RouteComponentProps) => {
   const classes = useStyles();
   const { tableList, env } = useContext(TableListContext);
@@ -36,7 +35,7 @@ const TableListMenu :React.FC<RouteComponentProps> = ({ history } :RouteComponen
     <div className={classes.root}>
       <List component="nav">
         {tableList[env]?.map((table, i) => {
-          const tableName = table.replace(tablePattern, "$1");
+          const tableName = TableName.displayName(table);
           return (
             <ListItem
               key={table}

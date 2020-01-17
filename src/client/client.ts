@@ -1,5 +1,6 @@
 import AWS from "aws-sdk";
 import DynamoDB, { DocumentClient, TableNameList } from "aws-sdk/clients/dynamodb";
+import { TableName } from "../domain/TableName";
 
 AWS.config.update({
   region: "us-west-2",
@@ -43,11 +44,7 @@ export class Client {
     });
     const tableListList :TableList = {};
     return tables.reduce((accumelator, table) => {
-      const matches = this.tableNamePattern.exec(table);
-      if (!matches?.[3]) {
-        return accumelator;
-      }
-      const env = matches[3];
+      const env = TableName.getEnv(table);
       if (!accumelator[env]) {
         accumelator[env] = [];
       }
