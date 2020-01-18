@@ -15,6 +15,7 @@ import { TableName } from "../domain/TableName";
 import { toModel, getFields } from "../domain/Model";
 import { ConditionalTableCell } from "./ConditionalTableCell";
 import { Loading } from "./Loading";
+import { RowDialog } from "./RowDialog";
 
 const useStyles = makeStyles({
   table: {
@@ -60,7 +61,7 @@ export const TableContent = ({ match } :Props) => {
       {!inProgress && (
         <>
           {items.length === 0 && <p>no data</p>}
-          <DynamodbTable fields={fields} items={items} />
+          <DynamodbTable fields={fields} items={items} tableName={match.params.tableName} />
         </>
       )}
       {inProgress && <Loading />}
@@ -69,33 +70,53 @@ export const TableContent = ({ match } :Props) => {
 };
 
 interface TableProps {
+  tableName :string
   fields :string[]
   items :any[]
 }
-const DynamodbTable :React.FC<TableProps> = ({ fields, items }) => {
+const DynamodbTable :React.FC<TableProps> = ({ tableName, fields, items }) => {
 
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+
+  const toggle = () => {
+    setOpen(!open);
+  };
+
+  const handleClickShowItem = (event :React.MouseEvent, item :any) => {
+    event.preventDefault();
+    setSelectedItem(item);
+    setOpen(true);
+  };
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} stickyHeader size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            {fields.map(field => (
-              <TableCell key={field}>{field}</TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {items.map(item => (
-            <TableRow key={item.id}>
-              {fields.map((field, i) => (
-                <ConditionalTableCell key={i} item={item} field={field} />
+    <>
+      <TableContainer component={Paper}>
+        <Table className={classes.table} stickyHeader size="small" aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              {fields.map(field => (
+                <TableCell key={field}>{field}</TableCell>
               ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {items.map(item => (
+              <TableRow key={item.id}>
+                {fields.map((field, i) => (
+                  <ConditionalTableCell
+                    key={i} item={item} field={field} isDetail={false}
+                    handleClickShowItem={handleClickShowItem}
+                  />
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <RowDialog open={open} item={selectedItem} fields={fields}
+        toggle={toggle} tableName={tableName} />
+    </>
   );
 };

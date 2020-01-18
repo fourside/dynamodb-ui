@@ -10,9 +10,11 @@ const HREF_PATTERN = /^https?:\/\//;
 interface Props {
   field :string
   item :any
+  handleClickShowItem :(event :React.MouseEvent, item :any) => void
+  isDetail :boolean
 }
 
-export const ConditionalTableCell = ({ field, item } :Props) => {
+export const ConditionalTableCell :React.FC<Props> = ({ field, item, handleClickShowItem, isDetail }) => {
 
   const value = item[field];
   if (!value) {
@@ -24,7 +26,7 @@ export const ConditionalTableCell = ({ field, item } :Props) => {
   if (type === "object") {
     if (Array.isArray(value)) {
       return (
-        <TableCell>
+        <TableCell align="center">
           {value.map(v => (
             <NewWindowAnchor href={v} key={v} />
           ))}
@@ -35,7 +37,7 @@ export const ConditionalTableCell = ({ field, item } :Props) => {
     }
   }
 
-  if (type === "number" || type === "bigint") {
+  if (!isDetail && (type === "number" || type === "bigint")) {
     return (
       <TableCell align="right">
         {value}
@@ -62,7 +64,24 @@ export const ConditionalTableCell = ({ field, item } :Props) => {
     )
   }
 
-  if (value.length > MAX_LENGTH) {
+  const ShowRowAnchor :React.FC<{ id :string }> = ({ id }) => {
+    return (
+      <a href="#!" onClick={(event) => handleClickShowItem(event, item)}>
+        {id}
+      </a>
+    );
+  };
+
+  if (!isDetail && field === "id") {
+    return (
+      <TableCell>
+        <ShowRowAnchor id={value} />
+      </TableCell>
+    );
+
+  }
+
+  if (!isDetail && value.length > MAX_LENGTH) {
     return (
       <TableCell>
         {value.slice(0, MAX_LENGTH)}
