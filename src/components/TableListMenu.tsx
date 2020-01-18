@@ -1,16 +1,16 @@
 import React, { useContext, useState, MouseEvent } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import { TableListContext } from "../contexts/TableListContext";
 import { TableName } from "../domain/TableName";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: '100%',
+      width: "100%",
       maxWidth: 200,
       backgroundColor: theme.palette.background.paper,
     },
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const TableListMenu :React.FC<RouteComponentProps> = ({ history } :RouteComponentProps) => {
   const classes = useStyles();
   const { tableList, env } = useContext(TableListContext);
-  const [index, setIndex] = useState<number | null>(null)
+  const [index, setIndex] = useState<number | null>(null);
 
   const handleClick = (event: MouseEvent<HTMLDivElement>, i :number, tableName :string) => {
     setIndex(i);
@@ -46,7 +46,7 @@ const TableListMenu :React.FC<RouteComponentProps> = ({ history } :RouteComponen
             >
               <ListItemText primary={tableName} />
             </ListItem>
-          )
+          );
         })}
       </List>
     </div>

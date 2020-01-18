@@ -1,10 +1,10 @@
-import React, { useState, useEffect, ChangeEvent, useContext } from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import { TableListContext } from '../contexts/TableListContext';
+import React, { useState, useEffect, ChangeEvent, useContext } from "react";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import { TableListContext } from "../contexts/TableListContext";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,7 +34,7 @@ export const SelectEnv = () => {
       if (e === "develop") {
         setEnv(e);
       }
-    })
+    });
     setEnvList(envList);
   }, [tableList, setEnv]);
 

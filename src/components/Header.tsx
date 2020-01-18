@@ -1,7 +1,7 @@
-import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import React from "react";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import { SelectEnv } from "./SelectEnv";
 
 const useStyles = makeStyles((theme: Theme) =>

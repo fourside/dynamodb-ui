@@ -1,8 +1,8 @@
 import React from "react";
 
-import TableCell from '@material-ui/core/TableCell';
+import TableCell from "@material-ui/core/TableCell";
 import { AbbreviationTooltip } from "./AbbreviationTooltip";
-import { CheckCircle, OpenInNew } from '@material-ui/icons';
+import { CheckCircle, OpenInNew } from "@material-ui/icons";
 
 const MAX_LENGTH = 40;
 const HREF_PATTERN = /^https?:\/\//;
@@ -31,7 +31,7 @@ export const ConditionalTableCell :React.FC<Props> = ({ field, item, handleClick
             <NewWindowAnchor href={v} key={v} />
           ))}
         </TableCell>
-      )
+      );
     } else {
       return <TableCell />;
     }
@@ -61,7 +61,7 @@ export const ConditionalTableCell :React.FC<Props> = ({ field, item, handleClick
       <TableCell align="center">
         <NewWindowAnchor href={value} />
       </TableCell>
-    )
+    );
   }
 
   const ShowRowAnchor :React.FC<{ id :string }> = ({ id }) => {
@@ -103,5 +103,5 @@ const NewWindowAnchor :React.FC<{ href :string }> = ({ href }) => {
     <a href={href} target="_blank" rel="noopener noreferrer">
       <OpenInNew />
     </a>
-  )
+  );
 };

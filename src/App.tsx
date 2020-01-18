@@ -22,9 +22,9 @@ const App :React.FC = () => {
   }, []);
 
   return (
-      <TableListContext.Provider value={value} >
-        <DynamodbUI />
-      </TableListContext.Provider>
+    <TableListContext.Provider value={value} >
+      <DynamodbUI />
+    </TableListContext.Provider>
   );
 };
 

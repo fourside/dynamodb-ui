@@ -28,7 +28,7 @@ export class Client {
         } else {
           resolve(data);
         }
-      })
+      });
     });
   }
 
@@ -50,10 +50,10 @@ export class Client {
       }
       accumelator[env].push(table);
       return accumelator;
-    }, tableListList)
+    }, tableListList);
   }
 }
 
 export interface TableList {
   [envName :string] : string[]
-};
+}

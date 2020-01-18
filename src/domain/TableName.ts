@@ -20,7 +20,7 @@ export class TableName {
 
   static getFindCallback(tableName :string, env :string) :(table :string) => boolean {
     const pattern = new RegExp(`^${tableName}-\\w+-${env}$`);
-    return (table :string) => { return pattern.test(table) };
+    return (table :string) => { return pattern.test(table); };
   }
 
 }
