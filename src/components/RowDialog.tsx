@@ -12,14 +12,19 @@ import TableRow from "@material-ui/core/TableRow";
 import { ConditionalTableCell } from "./ConditionalTableCell";
 
 interface Props {
-  open :boolean
-  toggle: () => void
-  fields :string[]
-  item :any
-  tableName :string
+  open: boolean;
+  toggle: () => void;
+  fields: string[];
+  item: any;
+  tableName: string;
 }
-export const RowDialog :React.FC<Props> = ({ open, toggle, tableName, fields, item }) => {
-
+export const RowDialog: React.FC<Props> = ({
+  open,
+  toggle,
+  tableName,
+  fields,
+  item,
+}) => {
   const descriptionElementRef = useRef<HTMLElement>(null);
   useEffect(() => {
     if (open) {
@@ -57,9 +62,11 @@ export const RowDialog :React.FC<Props> = ({ open, toggle, tableName, fields, it
   );
 };
 
-const TableInDialog :React.FC<{ fields :string[], item :any }> = ({ fields, item }) => {
-
-  const handleClickNothing = (event :React.MouseEvent, item :any) => {
+const TableInDialog: React.FC<{ fields: string[]; item: any }> = ({
+  fields,
+  item,
+}) => {
+  const handleClickNothing = (event: React.MouseEvent, item: any) => {
     event.preventDefault();
   };
 
@@ -71,7 +78,9 @@ const TableInDialog :React.FC<{ fields :string[], item :any }> = ({ fields, item
             <TableRow key={field}>
               <TableCell variant="head">{field}</TableCell>
               <ConditionalTableCell
-                item={item} field={field} isDetail={true}
+                item={item}
+                field={field}
+                isDetail={true}
                 handleClickShowItem={handleClickNothing}
               />
             </TableRow>

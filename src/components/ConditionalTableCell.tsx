@@ -8,14 +8,18 @@ const MAX_LENGTH = 40;
 const HREF_PATTERN = /^https?:\/\//;
 
 interface Props {
-  field :string
-  item :any
-  handleClickShowItem :(event :React.MouseEvent, item :any) => void
-  isDetail :boolean
+  field: string;
+  item: any;
+  handleClickShowItem: (event: React.MouseEvent, item: any) => void;
+  isDetail: boolean;
 }
 
-export const ConditionalTableCell :React.FC<Props> = ({ field, item, handleClickShowItem, isDetail }) => {
-
+export const ConditionalTableCell: React.FC<Props> = ({
+  field,
+  item,
+  handleClickShowItem,
+  isDetail,
+}) => {
   const value = item[field];
   if (!value) {
     return <TableCell />;
@@ -38,11 +42,7 @@ export const ConditionalTableCell :React.FC<Props> = ({ field, item, handleClick
   }
 
   if (!isDetail && (type === "number" || type === "bigint")) {
-    return (
-      <TableCell align="right">
-        {value}
-      </TableCell>
-    );
+    return <TableCell align="right">{value}</TableCell>;
   }
 
   if (type === "boolean") {
@@ -64,9 +64,9 @@ export const ConditionalTableCell :React.FC<Props> = ({ field, item, handleClick
     );
   }
 
-  const ShowRowAnchor :React.FC<{ id :string }> = ({ id }) => {
+  const ShowRowAnchor: React.FC<{ id: string }> = ({ id }) => {
     return (
-      <a href="#!" onClick={(event) => handleClickShowItem(event, item)}>
+      <a href="#!" onClick={event => handleClickShowItem(event, item)}>
         {id}
       </a>
     );
@@ -78,7 +78,6 @@ export const ConditionalTableCell :React.FC<Props> = ({ field, item, handleClick
         <ShowRowAnchor id={value} />
       </TableCell>
     );
-
   }
 
   if (!isDetail && value.length > MAX_LENGTH) {
@@ -90,15 +89,10 @@ export const ConditionalTableCell :React.FC<Props> = ({ field, item, handleClick
     );
   }
 
-  return (
-    <TableCell>
-      {value}
-    </TableCell>
-  );
-
+  return <TableCell>{value}</TableCell>;
 };
 
-const NewWindowAnchor :React.FC<{ href :string }> = ({ href }) => {
+const NewWindowAnchor: React.FC<{ href: string }> = ({ href }) => {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer">
       <OpenInNew />

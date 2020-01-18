@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
     label: {
       color: theme.palette.info.contrastText,
     },
-  }),
+  })
 );
 
 export const SelectEnv = () => {
@@ -44,7 +44,9 @@ export const SelectEnv = () => {
 
   return (
     <FormControl className={classes.formControl}>
-      <InputLabel id="select-env" className={classes.label}>Env</InputLabel>
+      <InputLabel id="select-env" className={classes.label}>
+        Env
+      </InputLabel>
       <Select
         labelId="select-env"
         id="select-env"
@@ -52,9 +54,11 @@ export const SelectEnv = () => {
         className={classes.select}
         onChange={handleChange}
       >
-        {envList.map(e =>
-          <MenuItem value={e} key={e}>{e}</MenuItem>
-        )}
+        {envList.map(e => (
+          <MenuItem value={e} key={e}>
+            {e}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );

@@ -1,9 +1,7 @@
 import { Client } from "./client";
 
 describe("client", () => {
-
-  beforeEach(() => {
-  });
+  beforeEach(() => {});
 
   it("listTable return table names", async () => {
     const client = new Client();
@@ -11,5 +9,4 @@ describe("client", () => {
     //console.log(tables);
     expect(tables.develop.length).not.toBe(0);
   });
-
 });

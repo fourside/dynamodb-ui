@@ -24,9 +24,9 @@ const useStyles = makeStyles({
   },
 });
 
-type Props = RouteComponentProps<{tableName :string}>;
+type Props = RouteComponentProps<{ tableName: string }>;
 
-export const TableContent = ({ match } :Props) => {
+export const TableContent = ({ match }: Props) => {
   const [items, setItems] = useState<any[]>([]);
   const [fields, setFields] = useState<string[]>([]);
   const [inProgress, setInProgress] = useState(false);
@@ -52,7 +52,7 @@ export const TableContent = ({ match } :Props) => {
       setFields(fields);
       setInProgress(false);
     })();
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [match.params.tableName, env]);
 
   return (
@@ -61,7 +61,11 @@ export const TableContent = ({ match } :Props) => {
       {!inProgress && (
         <>
           {items.length === 0 && <NoData />}
-          <DynamodbTable fields={fields} items={items} tableName={match.params.tableName} />
+          <DynamodbTable
+            fields={fields}
+            items={items}
+            tableName={match.params.tableName}
+          />
         </>
       )}
       {inProgress && <Loading />}
@@ -70,12 +74,11 @@ export const TableContent = ({ match } :Props) => {
 };
 
 interface TableProps {
-  tableName :string
-  fields :string[]
-  items :any[]
+  tableName: string;
+  fields: string[];
+  items: any[];
 }
-const DynamodbTable :React.FC<TableProps> = ({ tableName, fields, items }) => {
-
+const DynamodbTable: React.FC<TableProps> = ({ tableName, fields, items }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
@@ -84,7 +87,7 @@ const DynamodbTable :React.FC<TableProps> = ({ tableName, fields, items }) => {
     setOpen(!open);
   };
 
-  const handleClickShowItem = (event :React.MouseEvent, item :any) => {
+  const handleClickShowItem = (event: React.MouseEvent, item: any) => {
     event.preventDefault();
     setSelectedItem(item);
     setOpen(true);
@@ -93,7 +96,12 @@ const DynamodbTable :React.FC<TableProps> = ({ tableName, fields, items }) => {
   return (
     <>
       <TableContainer component={Paper}>
-        <Table className={classes.table} stickyHeader size="small" aria-label="a dense table">
+        <Table
+          className={classes.table}
+          stickyHeader
+          size="small"
+          aria-label="a dense table"
+        >
           <TableHead>
             <TableRow>
               {fields.map(field => (
@@ -106,7 +114,10 @@ const DynamodbTable :React.FC<TableProps> = ({ tableName, fields, items }) => {
               <TableRow key={item.id}>
                 {fields.map((field, i) => (
                   <ConditionalTableCell
-                    key={i} item={item} field={field} isDetail={false}
+                    key={i}
+                    item={item}
+                    field={field}
+                    isDetail={false}
                     handleClickShowItem={handleClickShowItem}
                   />
                 ))}
@@ -115,8 +126,13 @@ const DynamodbTable :React.FC<TableProps> = ({ tableName, fields, items }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <RowDialog open={open} item={selectedItem} fields={fields}
-        toggle={toggle} tableName={tableName} />
+      <RowDialog
+        open={open}
+        item={selectedItem}
+        fields={fields}
+        toggle={toggle}
+        tableName={tableName}
+      />
     </>
   );
 };

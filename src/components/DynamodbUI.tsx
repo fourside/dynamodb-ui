@@ -7,8 +7,7 @@ import { Header } from "./Header";
 import { Home } from "./Home";
 import { TableContent } from "./TableContent";
 
-export const DynamodbUI :React.FC = () => {
-
+export const DynamodbUI: React.FC = () => {
   return (
     <Router>
       <Header />
@@ -25,5 +24,4 @@ export const DynamodbUI :React.FC = () => {
       </Grid>
     </Router>
   );
-
 };

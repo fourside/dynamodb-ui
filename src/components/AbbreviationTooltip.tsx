@@ -3,15 +3,13 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { MoreHoriz } from "@material-ui/icons";
 
 interface Props {
-  text :string
+  text: string;
 }
 
-export const AbbreviationTooltip = ({ text } :Props) => {
-
+export const AbbreviationTooltip = ({ text }: Props) => {
   return (
     <Tooltip title={text}>
       <MoreHoriz />
     </Tooltip>
   );
 };
-

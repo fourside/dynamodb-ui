@@ -1,21 +1,20 @@
-
 export class Model {
-
   fields: string[];
-  constructor(object :any) {
+  constructor(object: any) {
     this.fields = this.extractFields(Object.keys(object));
     this.fields.forEach(field => {
       this.defineGet(field, object[field]);
     });
   }
 
-  private extractFields(originalFields :string[]) :string[] {
+  private extractFields(originalFields: string[]): string[] {
     const fields = originalFields.filter(field => {
-      return field !== "__typename"
-        && field !== "id"
-        && field !== "createdAt"
-        && field !== "updatedAt"
-      ;
+      return (
+        field !== "__typename" &&
+        field !== "id" &&
+        field !== "createdAt" &&
+        field !== "updatedAt"
+      );
     });
     fields.unshift("id");
     fields.push("createdAt");
@@ -23,59 +22,59 @@ export class Model {
     return fields;
   }
 
-  private defineGet(field :string, actualValue :any) {
-    let returnValue :string | string[];
+  private defineGet(field: string, actualValue: any) {
+    let returnValue: string | string[];
     switch (typeof actualValue) {
-    case "object":
-      if (actualValue === null) {
-        returnValue = "null";
-      } else if (Array.isArray(actualValue)) {
-        if (actualValue.length > 0 && isS3Object(actualValue[0])) {
-          returnValue = actualValue.map(v => new S3Object(v).url);
-        } else if (actualValue.length > 0 && typeof actualValue[0] === "object") {
-          returnValue = actualValue.map(v => JSON.stringify(v)).join(", ");
-        } else {
-          returnValue = actualValue.join(", ");
+      case "object":
+        if (actualValue === null) {
+          returnValue = "null";
+        } else if (Array.isArray(actualValue)) {
+          if (actualValue.length > 0 && isS3Object(actualValue[0])) {
+            returnValue = actualValue.map(v => new S3Object(v).url);
+          } else if (
+            actualValue.length > 0 &&
+            typeof actualValue[0] === "object"
+          ) {
+            returnValue = actualValue.map(v => JSON.stringify(v)).join(", ");
+          } else {
+            returnValue = actualValue.join(", ");
+          }
+        } else if (isS3Object(actualValue)) {
+          returnValue = new S3Object(actualValue).url;
         }
-      } else if (isS3Object(actualValue)) {
-        returnValue = (new S3Object(actualValue)).url;
-      }
-      break;
-    case "undefined":
-      returnValue = "undefined";
-      break;
-    default:
-      returnValue = actualValue;
+        break;
+      case "undefined":
+        returnValue = "undefined";
+        break;
+      default:
+        returnValue = actualValue;
     }
     Object.defineProperty(this, field, { get: () => returnValue });
   }
-
 }
 
 class S3Object {
+  bucket: string;
+  region: string;
+  key: string;
 
-  bucket: string
-  region: string
-  key: string
-
-  constructor(object :any) {
+  constructor(object: any) {
     this.bucket = object.bucket;
     this.region = object.region;
     this.key = object.key;
   }
 
-  get url() :string {
+  get url(): string {
     return `https://console.aws.amazon.com/s3/object/${this.bucket}/public/${this.key}?region=${this.region}`;
   }
-
 }
 
-const isS3Object = (object :any) :object is S3Object => {
+const isS3Object = (object: any): object is S3Object => {
   return object.bucket && object.region && object.key;
 };
 
-export function getFields(models :Model[]) {
-  const fields :string[] = [];
+export function getFields(models: Model[]) {
+  const fields: string[] = [];
   models.forEach(model => {
     model.fields.forEach(key => {
       if (!fields.includes(key)) {
@@ -86,6 +85,6 @@ export function getFields(models :Model[]) {
   return fields;
 }
 
-export function toModel(object :any) {
+export function toModel(object: any) {
   return new Model(object);
 }

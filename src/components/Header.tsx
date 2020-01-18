@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
     select: {
       flexGrow: 1,
     },
-  }),
+  })
 );
 
 export function Header() {

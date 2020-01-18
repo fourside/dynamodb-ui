@@ -11,10 +11,10 @@ const useStyles = makeStyles((theme: Theme) =>
         marginLeft: theme.spacing(2),
       },
     },
-  }),
+  })
 );
 
-export const Loading :React.FC<{}> = () => {
+export const Loading: React.FC<{}> = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>

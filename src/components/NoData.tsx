@@ -12,10 +12,10 @@ const useStyles = makeStyles((theme: Theme) =>
         height: theme.spacing(16),
       },
     },
-  }),
+  })
 );
 
-export const NoData :React.FC = () => {
+export const NoData: React.FC = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>

@@ -14,19 +14,25 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 200,
       backgroundColor: theme.palette.background.paper,
     },
-    listItem:{
+    listItem: {
       paddingTop: 4,
       paddingBottom: 4,
-    }
-  }),
+    },
+  })
 );
 
-const TableListMenu :React.FC<RouteComponentProps> = ({ history } :RouteComponentProps) => {
+const TableListMenu: React.FC<RouteComponentProps> = ({
+  history,
+}: RouteComponentProps) => {
   const classes = useStyles();
   const { tableList, env } = useContext(TableListContext);
   const [index, setIndex] = useState<number | null>(null);
 
-  const handleClick = (event: MouseEvent<HTMLDivElement>, i :number, tableName :string) => {
+  const handleClick = (
+    event: MouseEvent<HTMLDivElement>,
+    i: number,
+    tableName: string
+  ) => {
     setIndex(i);
     history.push(`/tables/${tableName}`);
   };
@@ -51,7 +57,6 @@ const TableListMenu :React.FC<RouteComponentProps> = ({ history } :RouteComponen
       </List>
     </div>
   );
-
 };
 
 export default withRouter(TableListMenu);

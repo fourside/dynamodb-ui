@@ -1,5 +1,8 @@
 import AWS from "aws-sdk";
-import DynamoDB, { DocumentClient, TableNameList } from "aws-sdk/clients/dynamodb";
+import DynamoDB, {
+  DocumentClient,
+  TableNameList,
+} from "aws-sdk/clients/dynamodb";
 import { TableName } from "../domain/TableName";
 
 AWS.config.update({
@@ -7,8 +10,8 @@ AWS.config.update({
 });
 
 export class Client {
-  dynamoDb :DynamoDB;
-  client :DocumentClient;
+  dynamoDb: DynamoDB;
+  client: DocumentClient;
   tableNamePattern = /^([a-zA-Z]+)-([a-z0-9]+)-([a-z]+)$/;
 
   constructor() {
@@ -20,9 +23,9 @@ export class Client {
     this.client = new AWS.DynamoDB.DocumentClient(options);
   }
 
-  async scan(tableName :string) :Promise<DocumentClient.ScanOutput> {
+  async scan(tableName: string): Promise<DocumentClient.ScanOutput> {
     return new Promise((resolve, reject) => {
-      this.client.scan({ TableName: tableName}, (err, data) => {
+      this.client.scan({ TableName: tableName }, (err, data) => {
         if (err) {
           reject(err);
         } else {
@@ -32,7 +35,7 @@ export class Client {
     });
   }
 
-  async listTablesByEnv() :Promise<TableList> {
+  async listTablesByEnv(): Promise<TableList> {
     const tables = await new Promise<TableNameList>((resolve, reject) => {
       this.dynamoDb.listTables({}, (err, data) => {
         if (err) {
@@ -42,7 +45,7 @@ export class Client {
         }
       });
     });
-    const tableListList :TableList = {};
+    const tableListList: TableList = {};
     return tables.reduce((accumelator, table) => {
       const env = TableName.getEnv(table);
       if (!accumelator[env]) {
@@ -55,5 +58,5 @@ export class Client {
 }
 
 export interface TableList {
-  [envName :string] : string[]
+  [envName: string]: string[];
 }
