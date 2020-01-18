@@ -16,6 +16,7 @@ import { toModel, getFields } from "../domain/Model";
 import { ConditionalTableCell } from "./ConditionalTableCell";
 import { Loading } from "./Loading";
 import { RowDialog } from "./RowDialog";
+import { NoData } from "./NoData";
 
 const useStyles = makeStyles({
   table: {
@@ -60,7 +61,7 @@ export const TableContent = ({ match } :Props) => {
       <h2>{match.params.tableName}</h2>
       {!inProgress && (
         <>
-          {items.length === 0 && <p>no data</p>}
+          {items.length === 0 && <NoData />}
           <DynamodbTable fields={fields} items={items} tableName={match.params.tableName} />
         </>
       )}
