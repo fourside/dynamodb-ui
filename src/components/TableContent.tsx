@@ -14,6 +14,7 @@ import { Client } from "../client/client";
 import { TableName } from "../domain/TableName";
 import { toModel, getFields } from "../domain/Model";
 import { ConditionalTableCell } from "./ConditionalTableCell";
+import { Loading } from "./Loading";
 
 const useStyles = makeStyles({
   table: {
@@ -26,13 +27,14 @@ type Props = RouteComponentProps<{tableName :string}>;
 export const TableContent = ({ match } :Props) => {
   const [items, setItems] = useState<any[]>([]);
   const [fields, setFields] = useState<string[]>([]);
+  const [inProgress, setInProgress] = useState(false);
   const { tableList, env } = useContext(TableListContext);
   const client = new Client();
 
-  const classes = useStyles();
 
   useEffect(() => {
     (async () => {
+      setInProgress(true);
       const tableName = match.params.tableName;
       const findCallback = TableName.getFindCallback(tableName, env);
       const tableFullName = tableList[env]?.find(findCallback);
@@ -47,15 +49,36 @@ export const TableContent = ({ match } :Props) => {
       setItems(items);
       const fields = getFields(items);
       setFields(fields);
+      setInProgress(false);
     })();
   // eslint-disable-next-line
   }, [match.params.tableName, env]);
 
-  if (items.length === 0) return null;
+  return (
+    <>
+      <h2>{match.params.tableName}</h2>
+      {!inProgress && (
+        <>
+          {items.length === 0 && <p>no data</p>}
+          <DynamodbTable fields={fields} items={items} />
+        </>
+      )}
+      {inProgress && <Loading />}
+    </>
+  );
+};
+
+interface TableProps {
+  fields :string[]
+  items :any[]
+}
+const DynamodbTable :React.FC<TableProps> = ({ fields, items }) => {
+
+  const classes = useStyles();
 
   return (
     <TableContainer component={Paper}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
+      <Table className={classes.table} stickyHeader size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
             {fields.map(field => (
@@ -74,6 +97,5 @@ export const TableContent = ({ match } :Props) => {
         </TableBody>
       </Table>
     </TableContainer>
-
   );
 };
