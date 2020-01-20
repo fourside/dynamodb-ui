@@ -1,5 +1,7 @@
 # dynamodb ui
 
+![](https://github.com/fourside/dynamodb-ui/workflows/Node%20CI/badge.svg)
+
 ## motivation
 - to be easy to see tables of spesicic env.
   - using amplify's multi env, many tables of dynamodb is listed flattenly.
