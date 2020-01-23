@@ -28,7 +28,7 @@ module.exports = {
       "react/prop-types": 0,
       "react/no-unescaped-entities": 0,
       "semi": "error",
-      "indent": ["error", 2],
+      "indent": ["error", 2, { "SwitchCase": 1 }],
       "quotes": ["error", "double"],
       "linebreak-style": ["error", "unix"],
       "no-trailing-spaces": "error",
