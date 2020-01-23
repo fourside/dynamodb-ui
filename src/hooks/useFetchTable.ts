@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useReducer } from "react";
 import { TableName } from "../domain/TableName";
 import { TableListContext } from "../contexts/TableListContext";
 import { Client, TableList } from "../client/client";
@@ -31,22 +31,43 @@ type TableType = {
   inProgress :boolean;
 };
 
+type Action = {
+  type: "FETCHING",
+} | {
+  type: "FETCHED",
+  payload: TableContent,
+};
+
+type TableContent = Omit<TableType, "inProgress">;
+
+const tableContentReducer = (state: TableType, action: Action) => {
+  switch (action.type) {
+    case "FETCHING": {
+      return {
+        ...state,
+        inProgress: true,
+      };
+    }
+    case "FETCHED": {
+      return {
+        ...action.payload,
+        inProgress: false,
+      };
+    }
+  }
+};
+
 export const useFetchTableContent = (tableName: string) => {
 
   const { tableList, env } = useContext(TableListContext);
-  const [state, setState] = useState<TableType>({
+  const [state, dispatch] = useReducer(tableContentReducer, {
     items: [],
     fields: [],
     inProgress: false,
   });
 
   useEffect(() => {
-    setState(state => {
-      return {
-        ...state,
-        inProgress: true,
-      };
-    });
+    dispatch({ type: "FETCHING" });
     const findCallback = TableName.getFindCallback(tableName, env);
     const tableFullName = tableList[env]?.find(findCallback);
     if (!tableFullName) {
@@ -59,10 +80,9 @@ export const useFetchTableContent = (tableName: string) => {
         return;
       }
       const fields = getFields(items);
-      setState({
-        items,
-        fields,
-        inProgress: false,
+      dispatch({
+        type: "FETCHED",
+        payload: { items, fields }
       });
     })();
   }, [tableName, env, tableList]);
