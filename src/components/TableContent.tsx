@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -9,14 +9,11 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
-import { TableListContext } from "../contexts/TableListContext";
-import { Client } from "../client/client";
-import { TableName } from "../domain/TableName";
-import { toModel, getFields } from "../domain/Model";
 import { ConditionalTableCell } from "./ConditionalTableCell";
 import { Loading } from "./Loading";
 import { RowDialog } from "./RowDialog";
 import { NoData } from "./NoData";
+import { useFetchTableContent } from "../hooks/useFetchTable";
 
 const useStyles = makeStyles({
   table: {
@@ -27,34 +24,7 @@ const useStyles = makeStyles({
 type Props = RouteComponentProps<{ tableName: string }>;
 
 export const TableContent = ({ match }: Props) => {
-  const [items, setItems] = useState<any[]>([]);
-  const [fields, setFields] = useState<string[]>([]);
-  const [inProgress, setInProgress] = useState(false);
-  const { tableList, env } = useContext(TableListContext);
-  const client = new Client();
-
-  useEffect(() => {
-    (async () => {
-      setInProgress(true);
-      const tableName = match.params.tableName;
-      const findCallback = TableName.getFindCallback(tableName, env);
-      const tableFullName = tableList[env]?.find(findCallback);
-      if (!tableFullName) {
-        return;
-      }
-      const output = await client.scan(tableFullName);
-      const items = output.Items?.map(item => toModel(item));
-      if (!items) {
-        return;
-      }
-      setItems(items);
-      const fields = getFields(items);
-      setFields(fields);
-      setInProgress(false);
-    })();
-    // eslint-disable-next-line
-  }, [match.params.tableName, env]);
-
+  const { items, fields, inProgress } = useFetchTableContent(match.params.tableName);
   return (
     <>
       <h2>{match.params.tableName}</h2>
